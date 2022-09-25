@@ -13,6 +13,8 @@ import com.example.roomdatabaseexample.adapter.WordListAdapter
 import com.example.roomdatabaseexample.data.localDB.Word
 import com.example.roomdatabaseexample.viewModel.WordViewModel
 import com.example.roomdatabaseexample.viewModel.WordViewModelFactory
+import java.lang.Math.random
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val wordTextView= findViewById<EditText>(R.id.et_add_number)
         addButton.setOnClickListener {
             val input = wordTextView.text.takeIf { editable -> !editable.isNullOrEmpty() }
-            viewModel.insertWord(Word(input.toString()))
+            viewModel.insertWord(Word(Random.nextInt(),input.toString()))
         }
         viewModel.allWords.observe(this){
             it.let { wordAdapter.submitList(it) }
