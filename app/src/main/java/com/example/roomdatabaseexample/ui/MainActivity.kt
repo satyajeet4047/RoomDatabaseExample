@@ -8,19 +8,18 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomdatabaseexample.R
-import com.example.roomdatabaseexample.WordApplication
 import com.example.roomdatabaseexample.adapter.WordListAdapter
 import com.example.roomdatabaseexample.data.localDB.Word
 import com.example.roomdatabaseexample.viewModel.WordViewModel
-import com.example.roomdatabaseexample.viewModel.WordViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Math.random
 import kotlin.random.Random
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel : WordViewModel by viewModels {
-        WordViewModelFactory((application as WordApplication).repository)
-    }
+    private val viewModel : WordViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,6 +39,7 @@ class MainActivity : AppCompatActivity() {
             val input = wordTextView.text.takeIf { editable -> !editable.isNullOrEmpty() }
             viewModel.insertWord(Word(Random.nextInt(),input.toString()))
         }
+
         viewModel.allWords.observe(this){
             it.let { wordAdapter.submitList(it) }
         }

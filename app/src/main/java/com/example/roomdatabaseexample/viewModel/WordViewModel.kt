@@ -3,9 +3,12 @@ package com.example.roomdatabaseexample.viewModel
 import androidx.lifecycle.*
 import com.example.roomdatabaseexample.data.localDB.Word
 import com.example.roomdatabaseexample.data.repository.WordRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class WordViewModel(private val wordRepository: WordRepository) : ViewModel() {
+@HiltViewModel
+class WordViewModel @Inject constructor(private val wordRepository: WordRepository) : ViewModel() {
 
     val allWords : LiveData<List<Word>> = wordRepository.getAllWords().asLiveData()
 
@@ -13,15 +16,4 @@ class WordViewModel(private val wordRepository: WordRepository) : ViewModel() {
         wordRepository.insertWord(word)
     }
 
-}
-
-class WordViewModelFactory(private val wordRepository: WordRepository) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(WordViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return WordViewModel(wordRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
 }
